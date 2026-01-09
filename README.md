@@ -1,2 +1,2 @@
 # nsi
-Truc de nsi
+Truc de nsi ☝️🤓
