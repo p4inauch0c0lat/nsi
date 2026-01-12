@@ -84,7 +84,7 @@ def creer_foret(nb_arbres):
 
 def afficher_foret(annee, foret, titre=None):
     """
-    Affiche l'état de la forêt pour une année donnée.
+    Affiche l'état de la forêt pour une année.
     
     Paramètres
 
@@ -151,7 +151,7 @@ def est_au_soleil(foret, index):
     Retour
     ------
     bool
-        True si l'arbre est au soleil, False s'il est à l'ombre.
+        True si l'arbre est au soleil False s'il est à l'ombree
     """
     hauteur = foret[index]
     # On regarde tous les arbres à gauche
@@ -163,11 +163,11 @@ def est_au_soleil(foret, index):
 
 def simulateur_soleil(nb_arbres, nb_annees, p_soleil=0.8, p_ombre=0.4):
     """
-    Simulateur de croissance avec prise en compte de l'ensoleillement.
+    Simulateur de croissance avec prise en compte de l'ensoleillement
     
-    À chaque année :
-    - Si un arbre est au soleil, il a une probabilité p_soleil de grandir.
-    - S'il est à l'ombre, il a une probabilité p_ombre de grandir.
+    À chaque année 
+     Si un arbre est au soleil, il a une probabilité p_soleil de grandir.
+     S'il est à l'ombre, il a une probabilité p_ombre de grandir.
     
     Paramètres
     ----------
