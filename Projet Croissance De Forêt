@@ -237,3 +237,33 @@ def menu():
 
 if __name__ == "__main__":
     menu()
+
+CODE NICOLAS
+import random
+
+nb_arbres=[random.randint(0,6) for i in range(6)]
+
+def croissance_arbres(tableau, années):
+    for i in range(années):
+        for valeur in range(len(tableau)):
+            grandi_ou_non=random.uniform(0,1)
+            if grandi_ou_non<=0.7:
+                tableau[valeur]+=1
+        affichage_arbres(tableau)
+        print()
+
+def affichage_arbres(tableau):
+    for i in range(len(tableau)):
+        print(tableau[i]*"I")
+
+
+def croissance_arbres_soleil(tableau, années):
+    print(tableau)
+    for i in range(années):
+        for valeur in range(len(tableau)):
+            if tableau[valeur-1]>tableau[valeur]:
+                tableau[valeur]+=1
+            else:
+                tableau[valeur]+=2
+        affichage_arbres(tableau)
+        print()
