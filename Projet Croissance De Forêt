@@ -20,22 +20,14 @@ foret(10,2)
 import random
 
 def simulation1(nb_arbre, année):
-"""
-Initialisation de la forêt avec des arbres de taille 0
-"""
+
     foret = [0] * nb_arbre
     
     for année in range(1, année + 1):
         print(f"Année {année}: {foret}")
         
-"""
-Chaque arbre a une probabilité de 0.7 de grandir de 1
-"""
-        for i in range(nb_arbre):
+     for i in range(nb_arbre):
             if random.random() <= 0.7: 
-"""
-Si le tirage est inférieur ou égal à 0.7
-"""
                 foret[i] += 1
 
 simulation1(10, 5)  # 10 arbres, 5 ans
