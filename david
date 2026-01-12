@@ -55,3 +55,163 @@ def menu():
 # Appel direct du menu
 menu()
 
+
+
+****************************************
+
+import random
+
+# Crée une forêt contenant n arbres initialisés à 0
+def creer_foret(n):
+    return [0] * n
+
+# Affiche l'état de la forêt pour une année donnée
+def afficher(annee, foret, titre=None):
+    if titre:
+        print(titre)
+    print(f"Année {annee} :", foret)
+
+# Simulateur simple : chaque arbre a une probabilité p de grandir chaque année
+def simulateur_simple(n, annees, p=0.7):
+    foret = creer_foret(n)          # forêt initiale
+    afficher(0, foret, "=== Simulateur simple ===")
+    
+    for annee in range(1, annees + 1):
+        # Chaque arbre grandit de 1 avec probabilité p
+        foret = [h + (1 if random.random() < p else 0) for h in foret]
+        afficher(annee, foret)
+    
+    return foret
+
+# Détermine si un arbre est au soleil (aucun arbre plus grand à sa gauche)
+def est_au_soleil(foret, i):
+    return all(h <= foret[i] for h in foret[:i])
+
+# Simulateur avec soleil/ombre : probabilité différente selon l'exposition
+def simulateur_soleil(n, annees, p_s=0.8, p_o=0.4):
+    foret = creer_foret(n)
+    afficher(0, foret, "=== Simulateur soleil/ombre ===")
+    
+    for annee in range(1, annees + 1):
+        for i in range(n):
+            # Choix de la probabilité selon l'exposition
+            p = p_s if est_au_soleil(foret, i) else p_o
+            
+            # L'arbre grandit selon la probabilité choisie
+            if random.random() < p:
+                foret[i] += 1
+        
+        afficher(annee, foret)
+    
+    return foret
+
+# Menu principal permettant de choisir le simulateur
+def menu():
+    print("=== Simulation forêt ===")
+    print("1. Simple")
+    print("2. Soleil / Ombre")
+
+    choix = input("Choix : ").strip()          # choix du mode
+    n = int(input("Nombre d'arbres : "))       # nombre d'arbres
+    annees = int(input("Nombre d'années : "))  # durée de la simulation
+
+    if choix == "1":
+        simulateur_simple(n, annees)
+    
+    elif choix == "2":
+        # Option pour modifier les probabilités
+        modif = input("Changer p_soleil/p_ombre ? (o/n) : ").lower()
+        
+        if modif == "o":
+            p_s = float(input("p soleil : "))
+            p_o = float(input("p ombre : "))
+            simulateur_soleil(n, annees, p_s, p_o)
+        else:
+            simulateur_soleil(n, annees)
+    
+    else:
+        print("Choix invalide.")
+
+# Lancement automatique du menu
+menu()
+
+*************************************************
+
+import random
+
+# Crée une forêt contenant nb_arbres arbres initialisés à 0
+def creer_foret(nb_arbres):
+    return [0] * nb_arbres
+
+# Affiche l'état de la forêt pour une année donnée
+def afficher_foret(annee, foret, titre=None):
+    if titre:
+        print(titre)
+    print(f"Année {annee} :", foret)
+
+# Simulateur simple : chaque arbre a une probabilité proba_croissance de grandir
+def simulateur_croissance_simple(nb_arbres, nb_annees, proba_croissance=0.7):
+    foret = creer_foret(nb_arbres)
+    afficher_foret(0, foret, "=== Simulateur simple ===")
+    
+    for annee in range(1, nb_annees + 1):
+        # Chaque arbre grandit de 1 avec une certaine probabilité
+        foret = [
+            hauteur + (1 if random.random() < proba_croissance else 0)
+            for hauteur in foret
+        ]
+        afficher_foret(annee, foret)
+    
+    return foret
+
+# Vérifie si un arbre reçoit du soleil (aucun arbre plus grand à sa gauche)
+def arbre_au_soleil(foret, index_arbre):
+    hauteur = foret[index_arbre]
+    return all(h <= hauteur for h in foret[:index_arbre])
+
+# Simulateur avec soleil/ombre : probabilité différente selon l'exposition
+def simulateur_croissance_soleil(nb_arbres, nb_annees, proba_soleil=0.8, proba_ombre=0.4):
+    foret = creer_foret(nb_arbres)
+    afficher_foret(0, foret, "=== Simulateur soleil/ombre ===")
+    
+    for annee in range(1, nb_annees + 1):
+        for i in range(nb_arbres):
+            # Choix de la probabilité selon l'exposition
+            proba = proba_soleil if arbre_au_soleil(foret, i) else proba_ombre
+            
+            # L'arbre grandit selon la probabilité choisie
+            if random.random() < proba:
+                foret[i] += 1
+        
+        afficher_foret(annee, foret)
+    
+    return foret
+
+# Menu principal permettant de choisir le simulateur
+def menu():
+    print("=== Simulation de croissance de forêt ===")
+    print("1. Croissance simple")
+    print("2. Croissance avec soleil / ombre")
+
+    choix = input("Votre choix : ").strip()
+    nb_arbres = int(input("Nombre d'arbres : "))
+    nb_annees = int(input("Nombre d'années : "))
+
+    if choix == "1":
+        simulateur_croissance_simple(nb_arbres, nb_annees)
+    
+    elif choix == "2":
+        modifier = input("Changer les probabilités ? (o/n) : ").lower()
+        
+        if modifier == "o":
+            proba_soleil = float(input("Probabilité au soleil : "))
+            proba_ombre = float(input("Probabilité à l'ombre : "))
+            simulateur_croissance_soleil(nb_arbres, nb_annees, proba_soleil, proba_ombre)
+        else:
+            simulateur_croissance_soleil(nb_arbres, nb_annees)
+    
+    else:
+        print("Choix invalide.")
+
+# Lancement automatique du menu
+menu()
