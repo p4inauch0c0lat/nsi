@@ -1,1 +1,57 @@
+import random
+
+def creer_foret(n):
+    return [0] * n
+
+def afficher(annee, foret, titre=None):
+    if titre:
+        print(titre)
+    print(f"Année {annee} :", foret)
+
+def simulateur_simple(n, annees, p=0.7):
+    foret = creer_foret(n)
+    afficher(0, foret, "=== Simulateur simple ===")
+    for annee in range(1, annees + 1):
+        foret = [h + (1 if random.random() < p else 0) for h in foret]
+        afficher(annee, foret)
+    return foret
+
+def est_au_soleil(foret, i):
+    return all(h <= foret[i] for h in foret[:i])
+
+def simulateur_soleil(n, annees, p_s=0.8, p_o=0.4):
+    foret = creer_foret(n)
+    afficher(0, foret, "=== Simulateur soleil/ombre ===")
+    for annee in range(1, annees + 1):
+        for i in range(n):
+            p = p_s if est_au_soleil(foret, i) else p_o
+            if random.random() < p:
+                foret[i] += 1
+        afficher(annee, foret)
+    return foret
+
+def menu():
+    print("=== Simulation forêt ===")
+    print("1. Simple")
+    print("2. Soleil / Ombre")
+
+    choix = input("Choix : ").strip()
+    n = int(input("Nombre d'arbres : "))
+    annees = int(input("Nombre d'années : "))
+
+    if choix == "1":
+        simulateur_simple(n, annees)
+    elif choix == "2":
+        modif = input("Changer p_soleil/p_ombre ? (o/n) : ").lower()
+        if modif == "o":
+            p_s = float(input("p soleil : "))
+            p_o = float(input("p ombre : "))
+            simulateur_soleil(n, annees, p_s, p_o)
+        else:
+            simulateur_soleil(n, annees)
+    else:
+        print("Choix invalide.")
+
+# Appel direct du menu
+menu()
 
