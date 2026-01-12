@@ -274,27 +274,3 @@ def croissance_arbres_soleil(tableau, années):
 
 
 
-
-
-
-👉 if __name__ == "__main__":
-🟢 En gros :
-C’est une porte d’entrée du programme.
-Python regarde :
-
-Si tu lances ce fichier directement, alors il exécute le code qui est dedans.
-
-Si tu importes ce fichier dans un autre, alors il n’exécute PAS ce code.
-
-🧠 Pourquoi ?
-Pour éviter que le menu ou le code principal se lance automatiquement quand tu veux juste réutiliser les fonctions dans un autre script.
-
-🎯 Exemple imagé
-Imagine ton fichier comme un livre :
-
-Les fonctions = les chapitres
-
-if __name__ == "__main__": = “Commencer l’histoire maintenant”
-
-Si tu ouvres le livre → l’histoire commence.
-Si tu prêtes juste un chapitre à quelqu’un → l’histoire ne démarre pas.
