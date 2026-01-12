@@ -1,1 +1,9 @@
+import random
 
+def foret(z,time):
+    t=[0]*z
+    for i in range (time) :
+        for i in range (z) :
+            if random.random() > 0.7:
+                t[i]=t[i] + random.randint(1,5)
+        print(t)
