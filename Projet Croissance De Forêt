@@ -35,8 +35,6 @@ simulation1(10, 5)  # 10 arbres, 5 ans
 import random
 
 def ensoleil(numero, foret):
-
-
     if numero == 0:
         return True
     return foret[numero - 1] <= foret[numero]  
@@ -47,17 +45,13 @@ def simulationensoleil(nb_arbre, année):
     
     for année in range(1, année + 1):
         print(f"Année {année}: {foret}")
-        
-        # Chaque arbre a une probabilité de croissance différente selon qu'il est au soleil ou à l'ombre
         for i in range(nb_arbre):
             if ensoleil(i, foret):  # Vérifie si l'arbre est au soleil
                 chance = 0.9  # Plus de chances de grandir s'il est au soleil
             else:
                 chance = 0.6  # Moins de chances de grandir à l'ombre
-            
             if random.random() <= chance:
                 foret[i] += 1
-
 
 simulationensoleil(10, 5)  # 10 arbres, 5 ans
 
