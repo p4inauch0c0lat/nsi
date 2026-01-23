@@ -295,3 +295,84 @@ def menu():
 
 # Lancement automatique du menu
 menu()
+======================================================================
+
+
+# Vérifie si un arbre est à l'ombre à cause des voisins à distance 1 ou 2
+def arbre_ombre_distance2(foret, index_arbre):
+    hauteur = foret[index_arbre]
+    # On regarde les arbres à gauche à distance 1 et 2
+    for d in [1, 2]:
+        if index_arbre - d >= 0:
+            if foret[index_arbre - d] > hauteur:
+                return True
+    return False
+
+def simulateur_distance2(nb_arbres, nb_annees, proba_soleil=0.8, proba_ombre=0.3):
+    """
+    Simulateur où un arbre peut être mis à l'ombre par un voisin
+    situé à distance 1 ou 2 à gauche
+    """
+    foret = [0] * nb_arbres
+    print("\n Simulateur distance 2 ")
+    print("Année 0 :", foret)
+
+    for annee in range(1, nb_annees + 1):
+        for i in range(nb_arbres):
+            if arbre_ombre_distance2(foret, i):
+                proba = proba_ombre
+            else:
+                proba = proba_soleil
+
+            if random.random() < proba:
+                foret[i] += 1
+
+        print(f"Année {annee} :", foret)
+
+    return foret
+
+
+# Vérifie l'exposition d'un arbre en regardant gauche et droite
+def exposition_bilaterale(foret, index_arbre):
+    hauteur = foret[index_arbre]
+    gauche = any(foret[i] > hauteur for i in range(0, index_arbre))
+    droite = any(foret[i] > hauteur for i in range(index_arbre + 1, len(foret)))
+
+    if not gauche and not droite:
+        return "soleil"
+    elif gauche and droite:
+        return "ombre"
+    else:
+        return "demi"
+
+def simulateur_bilaterale(nb_arbres, nb_annees,
+                          proba_soleil=0.9,
+                          proba_demi=0.6,
+                          proba_ombre=0.3):
+    """
+    Simulateur où l'on regarde les voisins à gauche ET à droite.
+    Soleil = aucun voisin plus grand
+    Demi-ombre = un seul côté bloque
+    Ombre = les deux côtés bloquent
+    """
+    foret = [0] * nb_arbres
+    print("\nSimulateur bilatéral")
+    print("Année 0 :", foret)
+
+    for annee in range(1, nb_annees + 1):
+        for i in range(nb_arbres):
+            expo = exposition_bilaterale(foret, i)
+
+            if expo == "soleil":
+                proba = proba_soleil
+            elif expo == "demi":
+                proba = proba_demi
+            else:
+                proba = proba_ombre
+
+            if random.random() < proba:
+                foret[i] += 1
+
+        print(f"Année {annee} :", foret)
+
+    return foret
