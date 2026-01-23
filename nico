@@ -1,3 +1,6 @@
+# Créé par nicolasthevenet, le 11/01/2026 en Python 3.7
+
+#PARTIE 1
 import random
 
 nb_arbres=[random.randint(0,1) for i in range(6)]
@@ -20,11 +23,34 @@ def croissance_arbres_soleil(tableau, années):
     print(tableau)
     for i in range(années):
         for valeur in range(len(tableau)):
-            grandi_ombre=random.uniform(0,1)
-            if grandi_ombre<=0.7:
-                tableau[valeur]+=1
+            if tableau[valeur-1]>tableau[valeur]:
+                grandi_ombre=random.uniform(0,1)
+                if grandi_ombre>=0.7:
+                    tableau[valeur]+=random.randint(1,3)
             else:
                 tableau[valeur]+=2
         affichage_arbres(tableau)
         print()
+
+#PARTIE 2
+
+def croissance_partie_2(tableau, années):
+    print(tableau)
+    for i in range(années):
+        for valeur in range(len(tableau)):
+            if tableau[valeur-1] and tableau[valeur+1]>tableau[valeur]:
+                tableau[valeur]+=0
+            if tableau[valeur-1] and tableau[valeur+1]<tableau[valeur]:
+                grandi_soleil=random.uniform(0,1)
+                if grandi_soleil<=0.9:
+                    tableau[valeur]+=random.randint(1,4)
+                else:
+                    tableau[valeur]+=random.randint(0,3)
+            else:
+                grandi_mi_ombre=random.uniform(0,1)
+                if grandi_mi_ombre<=0.5:
+                    tableau[valeur]+=random.randint(1,3)
+        affichage_arbres(tableau)
+        print()
+
 
