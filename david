@@ -219,6 +219,12 @@ menu()
 ------------------------------------------------------------------------------------------------------
 import random
 
+def affichage_arbres(tableau):
+    """Affiche chaque arbre sous forme de barres verticales."""
+    for hauteur in tableau:
+        print("I" * hauteur)
+    print()
+
 # Crée une forêt contenant nb_arbres arbres initialisés à 0
 def creer_foret(nb_arbres):
     return [0] * nb_arbres
