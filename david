@@ -382,3 +382,176 @@ def simulateur_bilaterale(nb_arbres, nb_annees,
         print(f"Année {annee} :", foret)
 
     return foret
+
+
+
+==================================================================
+==================================================================
+==================================================================
+==================================================================
+==================================================================
+
+import random
+
+def affichage_arbres(foret):
+    """Affiche chaque arbre sous forme de barres verticales."""
+    for hauteur in foret:
+        print("=" * hauteur)
+    print()
+
+
+def afficher_foret(annee, foret, titre=None):
+    """Affiche l'état de la forêt pour une année donnée."""
+    if titre:
+        print(titre)
+    print(f"Année {annee} :", foret)
+    affichage_arbres(foret)
+
+def creer_foret(nb_arbres):
+    """Crée une forêt de nb_arbres arbres initialisés à 0."""
+    return [0] * nb_arbres
+
+def simulateur_croissance_simple(nb_arbres, nb_annees, proba=0.7):
+    """
+    Chaque arbre a une probabilité fixe de 0.7 de grandir chaque année.
+    """
+    foret = creer_foret(nb_arbres)
+    afficher_foret(0, foret, "Simulateur simple")
+
+    for annee in range(1, nb_annees + 1):
+        foret = [
+            h + 1 if random.random() < proba else h
+            for h in foret
+        ]
+        afficher_foret(annee, foret)
+
+    return foret
+
+
+def arbre_au_soleil(foret, index):
+    """
+    Un arbre est au soleil s'il n'existe aucun arbre STRICTEMENT plus grand à sa gauche.
+    """
+    hauteur = foret[index]
+    return all(h <= hauteur for h in foret[:index])
+
+
+def simulateur_croissance_soleil(nb_arbres, nb_annees,
+                                 proba_soleil=0.8,
+                                 proba_ombre=0.4):
+    """
+    Les arbres au soleil ont plus de chances de grandir que ceux à l'ombre.
+    """
+    foret = creer_foret(nb_arbres)
+    afficher_foret(0, foret, "Simulateur soleil / ombre")
+
+    for annee in range(1, nb_annees + 1):
+        for i in range(nb_arbres):
+            proba = proba_soleil if arbre_au_soleil(foret, i) else proba_ombre
+            if random.random() < proba:
+                foret[i] += 1
+        afficher_foret(annee, foret)
+
+    return foret
+
+def arbre_ombre_distance2(foret, index):
+    """
+    Un arbre est à l'ombre si un arbre STRICTEMENT plus grand
+    se trouve à distance 1 ou 2 à gauche.
+    """
+    hauteur = foret[index]
+    for d in (1, 2):
+        if index - d >= 0 and foret[index - d] > hauteur:
+            return True
+    return False
+
+
+def simulateur_distance2(nb_arbres, nb_annees,
+                         proba_soleil=0.8,
+                         proba_ombre=0.3):
+    """
+    Variante où les arbres à distance 2 peuvent créer de l'ombre.
+    """
+    foret = creer_foret(nb_arbres)
+    afficher_foret(0, foret, "Simulateur distance 2")
+
+    for annee in range(1, nb_annees + 1):
+        for i in range(nb_arbres):
+            proba = proba_ombre if arbre_ombre_distance2(foret, i) else proba_soleil
+            if random.random() < proba:
+                foret[i] += 1
+        afficher_foret(annee, foret)
+
+    return foret
+
+
+def exposition_bilaterale(foret, index):
+    """
+    Soleil : aucun arbre plus grand à gauche ou à droite
+    Demi-ombre : un seul côté bloque
+    Ombre : les deux côtés bloquent
+    """
+    hauteur = foret[index]
+    gauche = any(foret[i] > hauteur for i in range(index))
+    droite = any(foret[i] > hauteur for i in range(index + 1, len(foret)))
+
+    if not gauche and not droite:
+        return "soleil"
+    elif gauche and droite:
+        return "ombre"
+    else:
+        return "demi"
+
+
+def simulateur_bilateral(nb_arbres, nb_annees,
+                          proba_soleil=0.9,
+                          proba_demi=0.6,
+                          proba_ombre=0.3):
+    """
+    Variante bilatérale avec trois niveaux d'ensoleillement.
+    """
+    foret = creer_foret(nb_arbres)
+    afficher_foret(0, foret, "Simulateur bilatéral")
+
+    for annee in range(1, nb_annees + 1):
+        for i in range(nb_arbres):
+            expo = exposition_bilaterale(foret, i)
+
+            if expo == "soleil":
+                proba = proba_soleil
+            elif expo == "demi":
+                proba = proba_demi
+            else:
+                proba = proba_ombre
+
+            if random.random() < proba:
+                foret[i] += 1
+
+        afficher_foret(annee, foret)
+
+    return foret
+
+def menu():
+    print("Simulation de croissance de forêt")
+    print("1 - Croissance simple")
+    print("2 - Soleil / ombre (gauche)")
+    print("3 - Ombre à distance 2")
+    print("4 - Ensoleillement bilatéral")
+
+    choix = input("Quel est votre choix 1, 2, 3 ou 4: ").strip()
+    nb_arbres = int(input("Nombre d'arbres : "))
+    nb_annees = int(input("Nombre d'années : "))
+
+    if choix == "1":
+        simulateur_croissance_simple(nb_arbres, nb_annees)
+    elif choix == "2":
+        simulateur_croissance_soleil(nb_arbres, nb_annees)
+    elif choix == "3":
+        simulateur_distance2(nb_arbres, nb_annees)
+    elif choix == "4":
+        simulateur_bilateral(nb_arbres, nb_annees)
+    else:
+        print("Choix invalide.")
+
+
+menu()
