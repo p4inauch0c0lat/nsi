@@ -152,7 +152,7 @@ def afficher_foret(annee, foret, titre=None):
 # Simulateur simple : chaque arbre a une probabilité proba_croissance de grandir
 def simulateur_croissance_simple(nb_arbres, nb_annees, proba_croissance=0.7):
     foret = creer_foret(nb_arbres)
-    afficher_foret(0, foret, "=== Simulateur simple ===")
+    afficher_foret(0, foret, " Simulateur simple ")
     
     for annee in range(1, nb_annees + 1):
         # Chaque arbre grandit de 1 avec une certaine probabilité
@@ -172,7 +172,7 @@ def arbre_au_soleil(foret, index_arbre):
 # Simulateur avec soleil/ombre : probabilité différente selon l'exposition
 def simulateur_croissance_soleil(nb_arbres, nb_annees, proba_soleil=0.8, proba_ombre=0.4):
     foret = creer_foret(nb_arbres)
-    afficher_foret(0, foret, "=== Simulateur soleil/ombre ===")
+    afficher_foret(0, foret, " Simulateur soleil/ombre ")
     
     for annee in range(1, nb_annees + 1):
         for i in range(nb_arbres):
@@ -189,7 +189,7 @@ def simulateur_croissance_soleil(nb_arbres, nb_annees, proba_soleil=0.8, proba_o
 
 # Menu principal permettant de choisir le simulateur
 def menu():
-    print("=== Simulation de croissance de forêt ===")
+    print(" Simulation de croissance de forêt ")
     print("1. Croissance simple")
     print("2. Croissance avec soleil / ombre")
 
