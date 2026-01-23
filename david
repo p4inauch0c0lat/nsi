@@ -216,7 +216,7 @@ def menu():
 # Lancement automatique du menu
 menu()
 
-
+------------------------------------------------------------------------------------------------------
 import random
 
 # Crée une forêt contenant nb_arbres arbres initialisés à 0
