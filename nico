@@ -20,8 +20,8 @@ def croissance_arbres_soleil(tableau, années):
     print(tableau)
     for i in range(années):
         for valeur in range(len(tableau)):
-            grandi_ou_non=random.uniform(0,1)
-            if grandi_ou_non<=0.7:
+            grandi_ombre=random.uniform(0,1)
+            if grandi_ombre<=0.7:
                 tableau[valeur]+=1
             else:
                 tableau[valeur]+=2
