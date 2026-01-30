@@ -219,3 +219,54 @@ def croissance_partie_2(tableau, années):
 
 
 
+##########################
+##################################
+##########################################
+##################################################
+###########################################################
+FINAL
+J'ai mis bcp de saut de ligne pour se retrouver en travaillant, ca fait grandir le premier et le dernier arbre chaque année, après ca fait grandir a partir du deuxieme jusqu'à l'avant dernier. CHatGPT pour verifier les erreurs d'indentations, compliqué de verif soit meme sachant que avec le teste c'est pas très lisible
+
+import random
+
+
+def affichage_arbres(tableau):
+    for i in range(len(tableau)):
+        print(tableau[i]*"I")
+        
+
+def croissance_partie_2(tableau, années):
+    print(tableau)
+    for i in range(années):
+        grandi_mi_ombre=random.uniform(0,1)
+        if grandi_mi_ombre<=0.5:
+            tableau[0]+=random.randint(1,3)
+                
+        grandi_mi_ombre=random.uniform(0,1)
+        if grandi_mi_ombre<=0.5:
+            tableau[len(tableau)-1]+=random.randint(1,3)
+        for valeur in range(1, len(tableau)-1):
+                
+            if tableau[valeur-1] > tableau[valeur] and tableau[valeur+1] > tableau[valeur]:
+                tableau[valeur] += 0
+                    
+                    
+            elif tableau[valeur-1] < tableau[valeur] and tableau[valeur+1] < tableau[valeur]:
+                grandi_soleil = random.uniform(0,1)
+                if grandi_soleil<=0.9:
+                    tableau[valeur]+=random.randint(1,4)
+                else:
+                    tableau[valeur]+=random.randint(0,3)
+                        
+            else:
+                grandi_mi_ombre=random.uniform(0,1)
+                if grandi_mi_ombre<=0.5:
+                    tableau[valeur]+=random.randint(1,3)
+        print(tableau) 
+       
+        affichage_arbres(tableau)
+        print() # pour faire une ligne entre chaque années
+      
+
+
+
