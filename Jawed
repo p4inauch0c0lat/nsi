@@ -1,0 +1,169 @@
+import random
+
+def affichage_arbres(foret):
+    """Affiche chaque arbre sous forme de barres verticales (ignore les morts)."""
+    for hauteur in foret:
+        # On affiche '=' seulement si l'arbre est vivant (hauteur >= 0)
+        print("=" * max(0, hauteur))
+    print()
+
+def afficher_foret(annee, foret, titre=None):
+    if titre:
+        print(f"\n--- {titre} ---")
+    # On remplace -1 par 'X' pour la lisibilité dans la liste
+    affichage_liste = ['X' if h == -1 else h for h in foret]
+    print(f"Année {annee} : {affichage_liste}")
+    affichage_arbres(foret)
+
+def creer_foret(nb_arbres):
+    return [0] * nb_arbres
+
+# --- SIMULATEURS PARTIE 1 & 2 ---
+
+def simulateur_croissance_simple(nb_arbres, nb_annees, proba=0.7):
+    foret = creer_foret(nb_arbres)
+    afficher_foret(0, foret, "Simulateur simple")
+    for annee in range(1, nb_annees + 1):
+        foret = [h + 1 if random.random() < proba else h for h in foret]
+        afficher_foret(annee, foret)
+    return foret
+
+def arbre_au_soleil(foret, index):
+    hauteur = foret[index]
+    return all(h <= hauteur for h in foret[:index])
+
+def simulateur_croissance_soleil(nb_arbres, nb_annees, proba_soleil=0.8, proba_ombre=0.4):
+    foret = creer_foret(nb_arbres)
+    afficher_foret(0, foret, "Simulateur soleil / ombre")
+    for annee in range(1, nb_annees + 1):
+        for i in range(nb_arbres):
+            proba = proba_soleil if arbre_au_soleil(foret, i) else proba_ombre
+            if random.random() < proba:
+                foret[i] += 1
+        afficher_foret(annee, foret)
+    return foret
+
+def arbre_ombre_distance2(foret, index):
+    hauteur = foret[index]
+    for d in (1, 2):
+        if index - d >= 0 and foret[index - d] > hauteur:
+            return True
+    return False
+
+def simulateur_distance2(nb_arbres, nb_annees, proba_soleil=0.8, proba_ombre=0.3):
+    foret = creer_foret(nb_arbres)
+    afficher_foret(0, foret, "Simulateur distance 2")
+    for annee in range(1, nb_annees + 1):
+        for i in range(nb_arbres):
+            proba = proba_ombre if arbre_ombre_distance2(foret, i) else proba_soleil
+            if random.random() < proba:
+                foret[i] += 1
+        afficher_foret(annee, foret)
+    return foret
+
+def exposition_bilaterale(foret, index):
+    hauteur = foret[index]
+    if hauteur == -1: return "mort"
+    gauche = any(foret[i] > hauteur for i in range(index))
+    droite = any(foret[i] > hauteur for i in range(index + 1, len(foret)))
+    if not gauche and not droite: return "soleil"
+    elif gauche and droite: return "ombre"
+    else: return "demi"
+
+def simulateur_bilateral(nb_arbres, nb_annees, proba_soleil=0.9, proba_demi=0.6, proba_ombre=0.3):
+    foret = creer_foret(nb_arbres)
+    afficher_foret(0, foret, "Simulateur bilatéral")
+    for annee in range(1, nb_annees + 1):
+        for i in range(nb_arbres):
+            expo = exposition_bilaterale(foret, i)
+            proba = {"soleil": proba_soleil, "demi": proba_demi, "ombre": proba_ombre}.get(expo, 0)
+            if random.random() < proba:
+                foret[i] += 1
+        afficher_foret(annee, foret)
+    return foret
+
+# Simulateur Part3
+
+def affichage_special_mort(annee, foret):
+    affichage_liste = ['X' if h == -1 else h for h in foret]
+    print(f"Année {annee} : {affichage_liste}")
+    for hauteur in foret:
+        if hauteur == -1: print(".") 
+        else: print("=" * hauteur)
+    print("-" * 10)
+
+def simulateur_ecosysteme_dynamique(nb_emplacements, nb_annees, 
+                                    proba_mort_ombre=0.1, 
+                                    proba_reproduction=0.2,
+                                    proba_tempete=0.1):
+    # Départ : 70% de chances d'avoir un arbre de taille 0, sinon vide (-1)
+    foret = [0 if random.random() > 0.3 else -1 for _ in range(nb_emplacements)]
+    stagnation = [0] * nb_emplacements
+    
+    print("\n--- Démarrage Écosystème Dynamique ---")
+
+    for annee in range(1, nb_annees + 1):
+        # Tempête
+        if random.random() < proba_tempete:
+            print(f" TEMPÊTE {annee}")
+            h_vivantes = [h for h in foret if h >= 0]
+            if h_vivantes:
+                seuil_tempete = max(h_vivantes) * 0.8
+                for i in range(nb_emplacements):
+                    if foret[i] > seuil_tempete:
+                        foret[i] = -1 
+
+        # 2. Croissance et Mort
+        for i in range(nb_emplacements):
+            if foret[i] == -1:
+                # Reproduction : un voisin doit être mature (taille > 3)
+                voisins = []
+                if i > 0: voisins.append(foret[i-1])
+                if i < nb_emplacements - 1: voisins.append(foret[i+1])
+                if any(v > 3 for v in voisins) and random.random() < proba_reproduction:
+                    foret[i] = 0
+                    stagnation[i] = 0
+            else:
+                expo = exposition_bilaterale(foret, i)
+                proba_pousse = {"soleil": 0.8, "demi": 0.5, "ombre": 0.2}.get(expo, 0)
+                
+                if random.random() < proba_pousse:
+                    foret[i] += 1
+                    stagnation[i] = 0
+                else:
+                    stagnation[i] += 1
+                
+                # Mort par manque de lumière ou vieillesse (stagnation)
+                if (expo == "ombre" and random.random() < proba_mort_ombre) or stagnation[i] > 5:
+                    foret[i] = -1
+
+        affichage_special_mort(annee, foret)
+    return foret
+
+# --- MENU (À APPELER À LA FIN) ---
+
+def menu():
+    print("\n=== Simulation de croissance de forêt ===")
+    print("1 - Croissance simple")
+    print("2 - Soleil / ombre (gauche)")
+    print("3 - Ombre à distance 2")
+    print("4 - Ensoleillement bilatéral")
+    print("5 - Écosystème dynamique (Partie 3)")
+
+    choix = input("Votre choix (1-5) : ").strip()
+    try:
+        nb_arbres = int(input("Nombre d'arbres : "))
+        nb_annees = int(input("Nombre d'années : "))
+    except ValueError:
+        print("Erreur : Veuillez entrer des nombres entiers.")
+        return
+
+    if choix == "1": simulateur_croissance_simple(nb_arbres, nb_annees)
+    elif choix == "2": simulateur_croissance_soleil(nb_arbres, nb_annees)
+    elif choix == "3": simulateur_distance2(nb_arbres, nb_annees)
+    elif choix == "4": simulateur_bilateral(nb_arbres, nb_annees)
+    elif choix == "5": simulateur_ecosysteme_dynamique(nb_arbres, nb_annees)
+    else: print("Choix invalide.")
+
+if __name__ == "__main__":
+    menu()
