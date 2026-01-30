@@ -54,3 +54,42 @@ def croissance_partie_2(tableau, années):
         print()
 
 
+
+
+
+##################################################################
+
+import random
+def croissance_partie_2(tableau, années):
+    print(tableau)
+    for i in range(années):
+
+        for valeur in range(len(tableau)):
+
+            if tableau[valeur-1] > tableau[valeur] and tableau[valeur+1] > tableau[valeur]:
+                tableau[valeur] += 0
+
+
+            if tableau[valeur-1] < tableau[valeur] and tableau[valeur+1] < tableau[valeur]:
+                grandi_soleil = random.uniform(0,1)
+
+
+                if grandi_soleil<=0.9:
+                    tableau[valeur]+=random.randint(1,4)
+
+                else:
+                    tableau[valeur]+=random.randint(0,3)
+
+            else:
+                grandi_mi_ombre=random.uniform(0,1)
+
+                if grandi_mi_ombre<=0.5:
+                    tableau[valeur]+=random.randint(1,3)
+
+        affichage_arbres(tableau)
+        print()
+
+        # ia pour check si tout fonctionnait et voir les erreurs,
+        # on faisait if tableau[valeur-1] and tableau[valeur+1]<tableau[valeur]: grandi_soleil=random.uniform(0,1)
+        # alors que ca ne marche pas ChatGPT
+
