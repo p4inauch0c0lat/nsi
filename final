@@ -1,6 +1,6 @@
 import random
 
-
+#PARTIE 1
 def affichage_annee(numero):
     print("=====================================")
     print("Année", numero)
@@ -41,7 +41,7 @@ def croissance_arbres_soleil(tableau, années):
         affichage_arbres(tableau)
         print()
 
-
+#PARTIE 2
 # ce simulateur prend en compte les voisins de chaque côté d'une valeur, les
 # chances de pousser de l'arbre seront réduites si il est encerclé par des arbres
 # plus grand
