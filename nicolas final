@@ -79,3 +79,20 @@ def croissance_partie_2(tableau, années):
                     tableau[valeur]+=random.randint(1,3)
         affichage_arbres(tableau)
 
+def croissance_partie_2_voisins_eloignes(tableau, annees):
+    print(tableau)
+    for annee in range(annees):
+        for i in range(len(tableau)):
+            # vérifier qu'on peut regarder 3 arbres plus loin
+            if i + 3 < len(tableau):
+                arbres_eloignes = tableau[i+1:i+4]
+
+                # si l'arbre est plus petit que tous les 3 suivants
+                if tableau[i]>min(arbres_eloignes):
+                    for i in range (i+1, i+4):
+                        tableau[i]+=random.randint(1,2)
+                else:
+                    tableau[i]+=random.randint(1,3)
+        affichage_arbres(tableau)
+        print()
+
